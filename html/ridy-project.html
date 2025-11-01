@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ridy - Ali Alsuwaiyel Portfolio</title>
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Ridy - AI-Driven Restaurant Ordering Platform">
+    <meta property="og:description" content="Innovative Telegram-based restaurant ordering platform powered by AI, Node.js, and MySQL.">
+    <meta property="og:type" content="website">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #1A1A1A;
+            --accent-color: #D4C5D0;
+            --background-color: #F5F5F5;
+            --text-color: #1A1A1A;
+            --text-light: #666;
+            --text-lighter: #999;
+            --border-radius: 8px;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-hover: 0 8px 20px rgba(0,0,0,0.2);
+            --transition: all 0.3s ease;
+            --container-padding: 1rem;
+            --section-padding: 2rem 1rem;
+            --max-width: 1200px;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            cursor: none;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Hide custom cursor on mobile devices */
+        @media (max-width: 767px) {
+            body {
+                cursor: auto;
+            }
+            
+            .cursor,
+            .cursor-follower {
+                display: none;
+            }
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #1A1A1A;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #D4C5D0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+        }
+
+        .cursor-hover {
+            width: 40px;
+            height: 40px;
+            background: rgba(26, 26, 26, 0.1);
+            border: 2px solid #D4C5D0;
+        }
+
+        .cursor-click {
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem var(--container-padding);
+            position: sticky;
+            top: 0;
+            background: rgba(245, 245, 245, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            min-height: 60px;
+        }
+        
+        .logo {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            z-index: 1001;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        
+        .nav-links {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--background-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 999;
+        }
+        
+        .nav-links.active {
+            transform: translateX(0);
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: var(--text-color);
+            transition: var(--transition);
+            transform-origin: center;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 1rem var(--container-padding);
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .breadcrumb a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 2rem var(--container-padding);
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .project-hero {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .project-title-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .project-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            background: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .project-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .asterisk-badge {
+            width: clamp(2.5rem, 6vw, 4rem);
+            height: clamp(2.5rem, 6vw, 4rem);
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+
+        .project-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--primary-color);
+        }
+
+        .meta-item {
+            font-size: 0.85rem;
+            color: var(--text-lighter);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-item strong {
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .tech-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .skill-tag {
+            padding: 0.4rem 0.8rem;
+            background: #D4C5D0;
+            color: #1A1A1A;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            padding: var(--section-padding);
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .section-number {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .section-content {
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .section-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .section-content h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Image Gallery */
+        .gallery-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 3rem;
+            align-items: center;
+        }
+
+        .gallery-item {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .gallery-image.placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            height: 400px;
+        }
+
+        .gallery-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: center;
+            font-weight: 400;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            cursor: default;
+        }
+        
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 3rem;
+            color: white;
+            cursor: pointer;
+            background: var(--accent-color);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: var(--transition);
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.1);
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border: 2px solid var(--primary-color);
+            transition: var(--transition);
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .card-description {
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .features-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: 1fr;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Button */
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--primary-color);
+            display: inline-block;
+            min-height: 44px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn:hover {
+            background: var(--primary-color);
+            color: var(--background-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-color);
+            color: var(--accent-color);
+        }
+
+        /* Related Projects */
+        .related-project-card {
+            background: #1A1A1A;
+            color: #F5F5F5;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            display: block;
+            transition: var(--transition);
+            border: 2px solid var(--primary-color);
+        }
+
+        .related-project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .related-project-card h3 {
+            color: #F5F5F5;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .related-project-card p {
+            color: #D4C5D0;
+            margin-bottom: 1rem;
+        }
+        
+        /* Tablet Styles */
+        @media (min-width: 768px) {
+            :root {
+                --container-padding: 2rem;
+                --section-padding: 4rem 2rem;
+            }
+
+            .nav-links {
+                position: static;
+                width: auto;
+                height: auto;
+                background: transparent;
+                display: flex;
+                flex-direction: row;
+                gap: 2rem;
+                transform: none;
+            }
+            
+            .hamburger {
+                display: none;
+            }
+
+            .gallery-grid {
+                flex-direction: row;
+                justify-content: center;
+                gap: 2rem;
+            }
+
+            .gallery-item {
+                max-width: 450px;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .project-logo {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        
+        /* Desktop Styles */
+        @media (min-width: 1024px) {
+            :root {
+                --container-padding: 3rem;
+                --section-padding: 6rem 3rem;
+            }
+
+            .gallery-grid {
+                gap: 2.5rem;
+            }
+
+            .gallery-item {
+                max-width: 480px;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .project-logo {
+                width: 120px;
+                height: 120px;
+            }
+        }
+        
+        /* Large Desktop Styles */
+        @media (min-width: 1440px) {
+            :root {
+                --max-width: 1600px;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover,
+            .gallery-item:hover,
+            .feature-card:hover {
+                transform: none;
+            }
+            
+            .btn:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">ALI ALSUWAIYEL</a>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html#about">About</a>
+            <a href="index.html#experience">Experience</a>
+            <a href="index.html#projects">Projects</a>
+            <a href="index.html#education">Education</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="index.html">← Back to Portfolio</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="project-hero">
+            <div class="project-title-section">
+                <img src="../images/ridy.png" alt="Ridy Logo" class="project-logo">
+                <div>
+                    <h1 class="project-title">
+                        Ridy
+                        <span class="asterisk-badge">✱</span>
+                    </h1>
+                    <p class="project-subtitle">AI-Driven Restaurant Ordering Platform</p>
+                </div>
+            </div>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <strong>Timeline:</strong> 2024 - Present
+                </div>
+                <div class="meta-item">
+                    <strong>Status:</strong> Active Development
+                </div>
+                <div class="meta-item">
+                    <strong>Platform:</strong> Website & Telegram Bot
+                </div>
+                <div class="meta-item">
+                    <strong>Type:</strong> Personal Project
+                </div>
+            </div>
+
+            <div class="tech-badges">
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">MySQL</span>
+                <span class="skill-tag">HTML/CSS</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">LLM integration</span>
+                <span class="skill-tag">Telegram Bot API</span>
+                <span class="skill-tag">AI Integration</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 01: Project Overview -->
+    <section class="content-section">
+        <h2 class="section-header">
+            <span class="section-number">01</span>
+            Project Overview
+        </h2>
+        <div class="section-content">
+            <p>
+                <strong>The Problem:</strong> Traditional restaurant ordering systems require customers to visit physical locations, call to place orders (often dealing with busy lines), or use complex apps with steep learning curves. Restaurants also face challenges managing orders during peak hours, leading to errors and customer dissatisfaction. There was a need for a simpler, more accessible ordering solution that works within platforms users already use daily.
+            </p>
+            <p>
+                <strong>The Solution:</strong> Ridy revolutionizes restaurant ordering by leveraging Telegram as the primary interface, allowing customers to browse menus and place orders entirely through chat-based interactions. The platform integrates AI to understand natural language orders, making the experience feel conversational rather than transactional. Built on a robust Node.js and Express backend with MySQL for data management, Ridy provides restaurants with a secure, scalable solution that reduces operational overhead while improving customer experience.
+            </p>
+            <p>
+                <strong>Target Audience:</strong> Restaurants looking to modernize their ordering systems without investing in expensive custom apps, and customers who prefer the simplicity and familiarity of chat-based ordering over downloading yet another restaurant app.
+            </p>
+            <p>
+                <strong>Context:</strong> Developed as a personal project to explore the intersection of conversational interfaces, AI, and real-world business needs. The project demonstrates full-stack development capabilities, from database design and backend API development to bot integration and natural language processing. Ridy showcases how existing messaging platforms can be transformed into powerful business tools without requiring users to change their behavior or learn new systems.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 02: Visual Showcase -->
+    <section class="content-section">
+        <h2 class="section-header">
+            <span class="section-number">02</span>
+            Visual Showcase
+        </h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="../ridy-mockups/ridy-mockup-1.png" alt="Ridy Dashboard Interface" class="gallery-image">
+                <div class="gallery-caption">Ridy Dashboard - Login and main interface</div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="../ridy-mockups/ridy-mockup-2.png" alt="Ridy Admin Panel" class="gallery-image">
+                <div class="gallery-caption">Restaurant admin panel for order management</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 03: Technical Implementation -->
+    <section class="content-section">
+        <h2 class="section-header">
+            <span class="section-number">03</span>
+            Technical Implementation
+        </h2>
+        
+        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin-bottom: 1.5rem; margin-top: 2rem;">Tech Stack</h3>
+        <div class="features-grid">
+            <div class="card">
+                <h4 class="card-title">Node.js & Express</h4>
+                <p class="card-description">Backend server architecture handling API requests, bot webhook processing, and business logic with secure authentication.</p>
+            </div>
+            <div class="card">
+                <h4 class="card-title">MySQL Database</h4>
+                <p class="card-description">Relational database storing restaurant menus, orders, customer data, and transaction history with optimized queries.</p>
+            </div>
+            <div class="card">
+                <h4 class="card-title">Telegram Bot API</h4>
+                <p class="card-description">Integration with Telegram for chat-based ordering, utilizing webhooks and inline keyboards for interactive experiences.</p>
+            </div>
+            <div class="card">
+                <h4 class="card-title">HTML/CSS/JS</h4>
+                <p class="card-description">Responsive web dashboard for restaurant administrators to manage menus, view orders, and track analytics.</p>
+            </div>
+            <div class="card">
+                <h4 class="card-title">AI Integration</h4>
+                <p class="card-description">Natural language processing to interpret customer orders in conversational format, improving UX significantly.</p>
+            </div>
+            <div class="card">
+                <h4 class="card-title">RESTful API</h4>
+                <p class="card-description">Clean API architecture enabling scalability and potential integration with other platforms and services.</p>
+            </div>
+        </div>
+
+        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin-bottom: 1.5rem; margin-top: 3rem;">Key Features</h3>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h4 class="feature-title">Chat-Based Ordering</h4>
+                <p class="feature-description">Users order exclusively through Telegram chat, eliminating the need for separate apps or websites. The familiar interface reduces friction and increases adoption.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h4 class="feature-title">AI Natural Language</h4>
+                <p class="feature-description">AI-powered understanding of conversational orders allows customers to type naturally like "I want 2 pizzas and a salad" instead of navigating complex menus.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🍽️</div>
+                <h4 class="feature-title">Dynamic Menus</h4>
+                <p class="feature-description">Restaurants can update menus, prices, and availability in real-time through the admin dashboard, instantly reflected in customer-facing bot.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h4 class="feature-title">Secure Backend</h4>
+                <p class="feature-description">Robust security implementation protecting customer data, payment information, and restaurant business data with encryption and authentication.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h4 class="feature-title">Order Management</h4>
+                <p class="feature-description">Comprehensive dashboard for restaurants to track orders, manage fulfillment, and analyze sales patterns for business insights.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h4 class="feature-title">Real-Time Updates</h4>
+                <p class="feature-description">Instant order notifications to restaurants and status updates to customers via Telegram, ensuring smooth communication throughout the process.</p>
+            </div>
+        </div>
+
+        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin-bottom: 1rem; margin-top: 3rem;">Architecture Overview</h3>
+        <div class="section-content">
+            <p>
+                The system architecture follows a three-tier model: the Telegram bot interface (presentation layer), the Node.js/Express API server (business logic layer), and the MySQL database (data layer). When a customer sends a message via Telegram, webhooks trigger the Express server to process the input through the AI language processing module. The server queries the MySQL database for menu items, validates orders, and stores transaction data. The admin web interface connects to the same API endpoints, providing restaurant owners with real-time access to manage their operations. This separation of concerns ensures scalability, maintainability, and the ability to add additional interfaces (like a mobile app) in the future without restructuring the backend.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 04: Development Journey -->
+    <section class="content-section">
+        <h2 class="section-header">
+            <span class="section-number">04</span>
+            Development Journey
+        </h2>
+
+        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin-bottom: 1.5rem;">Challenges Faced</h3>
+    
+        <div class="card">
+            <h4 class="card-title">Database Query Optimization</h4>
+            <p class="card-description">
+                As the menu database grew, query performance degraded during peak ordering times. Solution: Implemented database indexing strategies, query caching, and optimized join operations to reduce response times from seconds to milliseconds, ensuring scalability.
+            </p>
+        </div>
+        <div class="card">
+            <h4 class="card-title">Bot Conversation Flow Design</h4>
+            <p class="card-description">
+                Balancing automation with user control in chat interactions required careful UX consideration. Solution: Designed a hybrid approach using inline keyboards for common actions and natural language processing for custom requests, giving users flexibility while maintaining efficiency.
+            </p>
+        </div>
+
+        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin-bottom: 1rem; margin-top: 3rem;">Key Learnings</h3>
+        <div class="section-content">
+            <p>
+                This project provided deep insights into full-stack development, from database schema design to API architecture and frontend implementation. I learned that successful conversational interfaces require anticipating user intent and providing clear feedback at every step. The importance of database optimization became apparent when scaling to handle multiple concurrent orders. Working with the Telegram Bot API taught me how to leverage existing platforms creatively rather than building everything from scratch. Most importantly, I learned that the best technical solutions prioritize user experience—the AI language processing only adds value when it makes ordering faster and easier, not when it shows off technical capabilities for their own sake.
+            </p>
+        </div>
+
+        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin-bottom: 1rem; margin-top: 2rem;">Development Approach</h3>
+        <div class="section-content">
+            <p>
+                As a solo project, Ridy required wearing multiple hats: backend developer, database architect, frontend designer, and UX researcher. This comprehensive involvement provided valuable experience in making architectural decisions, prioritizing features, and managing technical debt. The project followed an iterative development approach, starting with a minimal viable product (basic bot + simple menu) and progressively adding features like AI language processing, admin dashboard, and analytics. Each iteration incorporated feedback from test users, demonstrating the importance of user-centered development even in technical projects.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 05: Results & Impact -->
+    <section class="content-section">
+        <h2 class="section-header">
+            <span class="section-number">05</span>
+            Results & Impact
+        </h2>
+        <div class="section-content">
+           
+            <p>
+                <strong>Innovation:</strong> Ridy pioneers the use of Telegram as a primary ordering interface, reducing barriers to entry for both restaurants and customers. By eliminating the need for custom app development and downloads, the platform makes sophisticated ordering systems accessible to small and medium-sized restaurants that couldn't afford traditional solutions.
+            </p>
+            <p>
+                <strong>User Experience Impact:</strong> The chat-based interface reduced ordering time compared to traditional phone calls, while the AI language processing eliminated the frustration of navigating complex menu systems. Users appreciated the ability to order in natural language within a platform they already use daily for communication.
+            </p>
+            <p>
+                <strong>Business Value:</strong> For restaurant partners, Ridy reduced order-taking overhead, minimized errors from phone orders, and provided valuable analytics about customer preferences and ordering patterns. The admin dashboard gave restaurant owners unprecedented visibility into their operations.
+            </p>
+        
+        </div>
+    </section>
+
+    <!-- Section 06: Links & Resources -->
+    <section class="content-section">
+        <h2 class="section-header">
+            <span class="section-number">06</span>
+            Links & Resources
+        </h2>
+        <div class="section-content">
+            <a href="index.html#contact" class="btn btn-primary">Contact About This Project</a>
+        </div>
+    </section>
+
+    <!-- Section 07: Related Projects -->
+    <section class="content-section">
+        <h2 class="section-header">
+            <span class="section-number">07</span>
+            More Projects
+        </h2>
+        <a href="darbik-project.html" class="related-project-card">
+            <h3>Darbik - AI Walking Adventure</h3>
+            <p>AI-powered iOS app transforming walking into exciting adventures using Core ML, Create ML, and computer vision for object detection challenges.</p>
+            <div class="tech-badges">
+                <span class="skill-tag">AI & ML</span>
+                <span class="skill-tag">Core ML</span>
+                <span class="skill-tag">SwiftUI</span>
+                <span class="skill-tag">Computer Vision</span>
+            </div>
+        </a>
+    </section>
+
+    <footer style="background: #1A1A1A; color: #F5F5F5; padding: 2rem 3rem; text-align: center;">
+        <p style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">
+            © 2025 Ali Alsuwaiyel - Saudi Arabia
+        </p>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close" aria-label="Close lightbox">&times;</span>
+        <div class="lightbox-content" id="lightboxContent" onclick="event.stopPropagation()"></div>
+    </div>
+
+    <!-- Custom Cursor Elements -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        
+        let mouseX = 0, mouseY = 0;
+        let followerX = 0, followerY = 0;
+        let isAnimating = false;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+            
+            if (!isAnimating) {
+                isAnimating = true;
+                animateFollower();
+            }
+        });
+
+        function animateFollower() {
+            const diffX = mouseX - followerX;
+            const diffY = mouseY - followerY;
+            
+            followerX += diffX * 0.15;
+            followerY += diffY * 0.15;
+            
+            cursorFollower.style.left = followerX + 'px';
+            cursorFollower.style.top = followerY + 'px';
+            
+            if (Math.abs(diffX) > 0.1 || Math.abs(diffY) > 0.1) {
+                requestAnimationFrame(animateFollower);
+            } else {
+                isAnimating = false;
+            }
+        }
+
+        const interactiveElements = document.querySelectorAll('a, button, .btn, .card, .gallery-item, .feature-card');
+        
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('cursor-hover');
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-hover');
+            });
+            
+            el.addEventListener('mousedown', () => {
+                cursor.classList.add('cursor-click');
+            });
+            
+            el.addEventListener('mouseup', () => {
+                cursor.classList.remove('cursor-click');
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Mobile Navigation
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+        
+        navLinks.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A') {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Lightbox functionality
+        function openLightbox(element) {
+            const lightbox = document.getElementById('lightbox');
+            const content = document.getElementById('lightboxContent');
+            const img = element.querySelector('.gallery-image');
+            
+            if (img && img.tagName === 'IMG') {
+                const lightboxImg = document.createElement('img');
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                content.innerHTML = '';
+                content.appendChild(lightboxImg);
+            } else {
+                content.textContent = img ? img.textContent : 'Image Preview';
+            }
+            
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active') && e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
+
