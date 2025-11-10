@@ -726,7 +726,9 @@
 
             <div class="tech-badges">
                 <span class="skill-tag">Node.js</span>
-                <span class="skill-tag">MySQL</span>
+                <span class="skill-tag">PostgreSQL</span>
+                <span class="skill-tag">Supabase</span>
+
                 <span class="skill-tag">HTML/CSS</span>
                 <span class="skill-tag">JavaScript</span>
                 <span class="skill-tag">LLM integration</span>
@@ -744,16 +746,14 @@
         </h2>
         <div class="section-content">
             <p>
-                <strong>The Problem:</strong> Traditional restaurant ordering systems require customers to visit physical locations, call to place orders (often dealing with busy lines), or use complex apps with steep learning curves. Restaurants also face challenges managing orders during peak hours, leading to errors and customer dissatisfaction. There was a need for a simpler, more accessible ordering solution that works within platforms users already use daily.
+                <strong>The Problem:</strong> Traditional restaurant ordering systems require customers to visit physical locations, call to place orders (often dealing with busy lines), or use complex apps with steep learning curves. 
             </p>
             <p>
-                <strong>The Solution:</strong> Ridy revolutionizes restaurant ordering by leveraging Telegram as the primary interface, allowing customers to browse menus and place orders entirely through chat-based interactions. The platform integrates AI to understand natural language orders, making the experience feel conversational rather than transactional. Built on a robust Node.js and Express backend with MySQL for data management, Ridy provides restaurants with a secure, scalable solution that reduces operational overhead while improving customer experience.
+                <strong>The Solution:</strong> Ridy revolutionizes restaurant ordering by leveraging Telegram as the primary interface, allowing customers to browse menus and place orders entirely through chat-based interactions. The platform integrates AI to understand natural language orders, making the experience feel conversational rather than transactional. 
             </p>
+          
             <p>
-                <strong>Target Audience:</strong> Restaurants looking to modernize their ordering systems without investing in expensive custom apps, and customers who prefer the simplicity and familiarity of chat-based ordering over downloading yet another restaurant app.
-            </p>
-            <p>
-                <strong>Context:</strong> Developed as a personal project to explore the intersection of conversational interfaces, AI, and real-world business needs. The project demonstrates full-stack development capabilities, from database design and backend API development to bot integration and natural language processing. Ridy showcases how existing messaging platforms can be transformed into powerful business tools without requiring users to change their behavior or learn new systems.
+                <strong>Context:</strong> Developed as a personal project to explore the intersection of conversational interfaces, AI, and real-world business needs. The project demonstrates full-stack development capabilities, from database design and backend API development to bot integration and natural language processing. 
             </p>
         </div>
     </section>
@@ -794,17 +794,19 @@
                 <p class="card-description">Backend server architecture handling API requests, bot webhook processing, and business logic with secure authentication.</p>
             </div>
             <div class="card">
-                <h4 class="card-title">MySQL Database</h4>
+                <h4 class="card-title">Supabase</h4>
+                <p class="card-description">Supabase provides a fully managed PostgreSQL database with built-in authentication, and real-time data syncing. It handles authentication, user management, and database operations without the overhead of running your own backend, making it fast to build and scale secure applications.
+                </p>
+            </div>
+            <div class="card">
+                <h4 class="card-title">PostgreSQL Database</h4>
                 <p class="card-description">Relational database storing restaurant menus, orders, customer data, and transaction history with optimized queries.</p>
             </div>
             <div class="card">
                 <h4 class="card-title">Telegram Bot API</h4>
                 <p class="card-description">Integration with Telegram for chat-based ordering, utilizing webhooks and inline keyboards for interactive experiences.</p>
             </div>
-            <div class="card">
-                <h4 class="card-title">HTML/CSS/JS</h4>
-                <p class="card-description">Responsive web dashboard for restaurant administrators to manage menus, view orders, and track analytics.</p>
-            </div>
+            
             <div class="card">
                 <h4 class="card-title">AI Integration</h4>
                 <p class="card-description">Natural language processing to interpret customer orders in conversational format, improving UX significantly.</p>
@@ -820,7 +822,7 @@
             <div class="feature-card">
                 <div class="feature-icon">💬</div>
                 <h4 class="feature-title">Chat-Based Ordering</h4>
-                <p class="feature-description">Users order exclusively through Telegram chat, eliminating the need for separate apps or websites. The familiar interface reduces friction and increases adoption.</p>
+                <p class="feature-description">Users order exclusively through Telegram chat.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🤖</div>
@@ -850,11 +852,7 @@
         </div>
 
         <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; margin-bottom: 1rem; margin-top: 3rem;">Architecture Overview</h3>
-        <div class="section-content">
-            <p>
-                The system architecture follows a three-tier model: the Telegram bot interface (presentation layer), the Node.js/Express API server (business logic layer), and the MySQL database (data layer). When a customer sends a message via Telegram, webhooks trigger the Express server to process the input through the AI language processing module. The server queries the MySQL database for menu items, validates orders, and stores transaction data. The admin web interface connects to the same API endpoints, providing restaurant owners with real-time access to manage their operations. This separation of concerns ensures scalability, maintainability, and the ability to add additional interfaces (like a mobile app) in the future without restructuring the backend.
-            </p>
-        </div>
+       
     </section>
 
     <!-- Section 04: Development Journey -->
@@ -902,9 +900,7 @@
         </h2>
         <div class="section-content">
            
-            <p>
-                <strong>Innovation:</strong> Ridy pioneers the use of Telegram as a primary ordering interface, reducing barriers to entry for both restaurants and customers. By eliminating the need for custom app development and downloads, the platform makes sophisticated ordering systems accessible to small and medium-sized restaurants that couldn't afford traditional solutions.
-            </p>
+        
             <p>
                 <strong>User Experience Impact:</strong> The chat-based interface reduced ordering time compared to traditional phone calls, while the AI language processing eliminated the frustration of navigating complex menu systems. Users appreciated the ability to order in natural language within a platform they already use daily for communication.
             </p>
